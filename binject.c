@@ -25,21 +25,7 @@ int file_type(char* file)
    return 0;
   }
  fread(buf,sizeof(char),4,f);
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+ if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00)
+  
+   if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00) if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00) if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00) if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00)
 }
