@@ -21,9 +21,7 @@ int file_type(char* file)
  FILE *f
   f=fopen(file,"r");
  if(f==NULL)
-  
    return 0;
-  
  fread(buf,sizeof(char),4,f);
  if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00)
   return 1;
