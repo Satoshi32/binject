@@ -9,7 +9,9 @@ uint32_t find_code_cave(uint32_t cave_size,uint32_t starting_offset,char *buffer
   {b+=1;}
    else
   {b=0;}
-   if(b==cave_size)
+   if
+    (b==cave_size
+     )
    {return a;}
 }
  return 0;
