@@ -6,11 +6,11 @@ int find_code_cave(uint32_t cave_size,uint32_t starting_offset,char *buffer,uint
  for(a;a<sizeof(buffer);a++)
   {
    if(buffer[a]==0x00)
-  {b+=1;}
+  b+=1;
    else
-  {b=0;}
+  b=0;
    if(b==cave_size)
-  {return a;}
+  return a;
    }
  return 0;
 }
@@ -21,11 +21,15 @@ int file_type(char* file)
  FILE *f
   f=fopen(file,"r");
  if(f==NULL)
-  {
+  
    return 0;
-  }
+  
  fread(buf,sizeof(char),4,f);
  if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00)
-  
-   if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00) if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00) if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00) if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00)
+  return 1;
+ if(strcmp(buf,"\xce\xfa\xed\xfe")==0x00)
+  return 2;
+ if(strcmp(buf,"\xcf\xfa\xed\xfe")==0x00)
+  return 2;
+ if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00) if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00)
 }
