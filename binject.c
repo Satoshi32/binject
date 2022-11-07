@@ -33,6 +33,5 @@ int file_type(char* file)
  if(strcmp(buf,"\xcf\xfa\xed\xfe")==0x00)
   return MACH-O;
  if(strcmp(buf,"\x4d\x5a\")==0x00)
-  return PE;
-         
+  return PE;       
 }
