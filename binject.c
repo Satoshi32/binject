@@ -5,7 +5,6 @@ int find_code_cave(uint32_t cave_size,uint32_t starting_offset,char *buffer,uint
 {
  uint32_t a,b;
   a=starting_offset;
-  
  for(a;a<sizeof(buffer);a++)
   {
    if(buffer[a]==0x00)
