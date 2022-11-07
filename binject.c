@@ -26,6 +26,7 @@ int file_type(char* file)
  if(f==NULL)
    return 0;
  fread(buf,sizeof(char),4,f);
+ fclose(f);
  if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00)
   return ELF;
  if(strcmp(buf,"\xce\xfa\xed\xfe")==0x00)
