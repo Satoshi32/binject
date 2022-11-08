@@ -35,4 +35,12 @@ int file_type(char* file)
  if(strcmp(buf,"\x4d\x5a\")==0x00)
   return PE;       
 }
-int binject(
+int binject(char *file,char *shellcode)
+           {int type;
+            type=file_type(file)
+             switch(type)
+             { 
+              case PE:
+               binject_PE
+              case MACH-O:
+           
