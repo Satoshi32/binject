@@ -24,6 +24,8 @@ int file_type(char* file)
   f=fopen(file,"r");
  if(f==NULL)
    return 0;
+ else
+ {
  fread(buf,sizeof(char),4,f);
  fclose(f);
  if(strcmp(buf,"\x7f\x45\x4c\x46")==0x00)
@@ -33,7 +35,9 @@ int file_type(char* file)
  if(strcmp(buf,"\xcf\xfa\xed\xfe")==0x00)
   return MACH-O;
  if(strcmp(buf,"\x4d\x5a\")==0x00)
-  return PE;       
+  return PE; 
+  }
+           return 0;
 }
 int binject(char *file,char *shellcode)
            {int type;
@@ -41,6 +45,14 @@ int binject(char *file,char *shellcode)
              switch(type)
              { 
               case PE:
-               binject_PE
+               binject_PE(file,shellcode);
+              break;
               case MACH-O:
+               binject_MACH-O(file,shellcode);
+              break;
+              case ELF:
+               binject_ELF(file,shellcode);
+              break;
+              default:
+               return 0
            
