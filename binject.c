@@ -35,3 +35,4 @@ int file_type(char* file)
  if(strcmp(buf,"\x4d\x5a\")==0x00)
   return PE;       
 }
+int binject(
