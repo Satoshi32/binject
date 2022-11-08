@@ -5,6 +5,6 @@ int binject_ELF(char *file,char *shellcode)
   f=fopen(file,"r");
   fseek(f,0,SEEK_END);
  size=ftell(f);
-  char *file_buffer = calloc(sizeof(char),size);
+  char *file_buffer = calloc(1,size);
   free(file_buffer);
 }
