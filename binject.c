@@ -1,11 +1,11 @@
 #DEFINE ELF 1
 #DEFINE MACH-O 2
 #DEFINE PE 3
-int find_code_cave(uint32_t cave_size,uint32_t starting_offset,char *buffer,uint32_t size_of_buffer)
+int find_code_cave(uint32_t cave_size,uint32_t starting_offset,uint32_t ending_offset,char *buffer)
 {
  uint32_t a,b;
   a=starting_offset;
- for(a;a<sizeof(buffer);a++)
+ for(a;a<ending_offset;a++)
   {
    if(buffer[a]==0x00)
   b+=1;
