@@ -55,7 +55,8 @@ int binject(char *file,char *shellcode)
                binject_ELF(file,shellcode);
               break;
               default:
-               return 0
+               return 0;
+              break;
               }
            }
            
