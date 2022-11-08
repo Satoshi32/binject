@@ -42,7 +42,7 @@ int file_type(char* file)
 int binject(char *file,char *shellcode)
            {
             int type;
-            type=file_type(file)
+            type=file_type(file);
              switch(type)
              { 
               case PE:
