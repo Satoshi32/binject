@@ -40,7 +40,8 @@ int file_type(char* file)
            return 0;
 }
 int binject(char *file,char *shellcode)
-           {int type;
+           {
+            int type;
             type=file_type(file)
              switch(type)
              { 
@@ -55,4 +56,6 @@ int binject(char *file,char *shellcode)
               break;
               default:
                return 0
+              }
+           }
            
