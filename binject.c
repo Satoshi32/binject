@@ -1,6 +1,8 @@
 #DEFINE ELF 1
 #DEFINE MACH-O 2
 #DEFINE PE 3
+#DEFINE BIG_ENDIAN 1
+#DEFINE LITTLE_ENDIAN 0
 int find_code_cave(uint32_t cave_size,uint32_t starting_offset,uint32_t ending_offset,char *buffer)
 {
  uint32_t a,b;
@@ -39,7 +41,15 @@ int file_type(char* file)
   }
            return 0;
 }
-
+char *apply_suffix_jmp_intel32(char *shellcode,uint32_t shellcodevaddr,uint32_t entrypoint,int byte_order)
+           {
+            
+            
+            
+            
+            
+            
+           }
 int binject(char *file,char *shellcode)
            {
             int type;
