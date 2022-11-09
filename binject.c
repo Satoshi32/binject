@@ -44,11 +44,11 @@ int file_type(char* file)
 char *apply_suffix_jmp_intel32(char *shellcode,uint32_t shellcodevaddr,uint32_t entrypoint,int byte_order)
            {
             
+           char *jmp_shellcode=calloc(1,strlen(shellcode)+9); 
             
             
             
-            
-            
+            return jmp_shellcode;
            }
 int binject(char *file,char *shellcode)
            {
