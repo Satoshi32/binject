@@ -39,6 +39,7 @@ int file_type(char* file)
   }
            return 0;
 }
+
 int binject(char *file,char *shellcode)
            {
             int type;
