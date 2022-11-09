@@ -50,7 +50,7 @@ int binject(char *file,char *shellcode)
                binject_PE(file,shellcode);
               break;
               case MACH-O:
-               binject_MACH_O(file,shellcode);
+               binject_MACH-O(file,shellcode);
               break;
               case ELF:
                binject_ELF(file,shellcode);
