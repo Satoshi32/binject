@@ -1,4 +1,4 @@
-int binject_MACH_O(char *file,char *shellcode)
+int binject_MACH-O(char *file,char *shellcode)
 {
    uint32_t size;
    FILE *f;
