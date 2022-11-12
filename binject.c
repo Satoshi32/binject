@@ -47,10 +47,22 @@ char *apply_suffix_jmp_intel32(char *shellcode,uint32_t shellcodevaddr,uint32_t 
             i=strlen(shellcode);
            char *jmp_shellcode=calloc(1,strlen(shellcode)+9); 
             strcat(jmp_shellcode,shellcode);
+            if(byte_order)
+            {
+             
+             
+             
+            }
+            else
+            {
+             
+             
+             
+            }
             jmp_shellcode[i]=0x68;
-            
-            
-            
+            jmp_shellcode[i+4]=0xff;
+            jmp_shellcode[i+5]=0x24;
+            jmp_shellcode[i+6]=0x24;
             return jmp_shellcode;
            }
 int binject(char *file,char *shellcode)
