@@ -1,4 +1,4 @@
-int binject_ELF(char *file,char *shellcode)
+int binject_ELF(char *file,char *shellcode,int method)
 { 
   uint32_t size;
   int i,x;
