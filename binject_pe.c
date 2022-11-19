@@ -14,6 +14,15 @@ uint32_t size;
                         if(x!=0)
                         break;
   }
-  }                      
+  } 
+  if(method==NEW_SECTION)
+  {
+  
+    
+    
+    
+    
+    
+  }
   free(file_buffer);  
 }
