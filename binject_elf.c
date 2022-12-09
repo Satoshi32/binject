@@ -21,29 +21,17 @@ int binject_ELF(char *file,char *shellcode,int method)
                         }
   if(method==SILVIO_METHOD)
   {
-p_offset+=4096;
-
-	  
-e_entry=p_vaddr+p_filesz;
 	  for (phdr = (Elf32_Phdr *)pdata, i = 0; i < ehdr.e_phnum; i++) {
 		if (offset) {
-			phdr->p_offset += PAGE_SIZE;
+			phdr->p_offset += 4096;
 		} else if (phdr->p_type == PT_LOAD && phdr->p_offset == 0) {
 /* 
 	is this the text segment ? Nothing says the offset must be 0 but it
 	normally is.
 */
-			int palen;
-
-			if (phdr->p_filesz != phdr->p_memsz) goto error;
-
-			evaddr = phdr->p_vaddr + phdr->p_filesz;
-			palen = PAGE_SIZE - (evaddr & (PAGE_SIZE - 1));
-
-			if (palen < vlen) goto error;
-
-			ehdr.e_entry = evaddr + ventry;
-			offset = phdr->p_offset + phdr->p_filesz;
+			
+			ehdr.e_entry = p_vaddr+p_filesz;
+			
 
 			phdr->p_filesz += vlen;
 			phdr->p_memsz += vlen;
