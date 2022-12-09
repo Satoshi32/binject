@@ -27,3 +27,17 @@ typedef struct
   uint32_t    p_flags;                /* Segment flags */
   uint32_t    p_align;                /* Segment alignment */
 } Elf32_Phdr;
+
+typedef struct
+{
+  uint32_t    sh_name;                /* Section name (string tbl index) */
+  uint32_t    sh_type;                /* Section type */
+  uint32_t    sh_flags;               /* Section flags */
+  uint32_t    sh_addr;                /* Section virtual addr at execution */
+  uint32_t    sh_offset;              /* Section file offset */
+  uint32_t    sh_size;                /* Section size in bytes */
+  uint32_t    sh_link;                /* Link to another section */
+  uint32_t    sh_info;                /* Additional section information */
+  uint32_t    sh_addralign;           /* Section alignment */
+  uint32_t    sh_entsize;             /* Entry size if section holds table */
+} Elf32_Shdr;
