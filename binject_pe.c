@@ -8,18 +8,12 @@ uint32_t size;
   char *file_buffer = calloc(1,size);
    PeBinject - Inject shellcode into an PE binary
 func PeBinject(sourceBytes []byte, shellcodeBytes []byte, config *BinjectConfig) ([]byte, error) {
-
-	// Open File and Extract Needed Fields
-	peFile, err := pe.NewFile(bytes.NewReader(sourceBytes))
-	if err != nil {
-		return nil, err
-	}
 	var entryPoint, sectionAlignment, fileAlignment, scAddr uint32
 	var imageBase uint64
 	var shellcode []byte
 	lastSection := peFile.Sections[peFile.NumberOfSections-1]
 
-	switch hdr := (peFile.OptionalHeader).(type) {
+	switch (peFile.OptionalHeader).(type) {
 	case *pe.OptionalHeader32:
 		imageBase = uint64(hdr.ImageBase) // cast this back to a uint32 before use in 32bit
 		entryPoint = hdr.AddressOfEntryPoint
@@ -125,6 +119,7 @@ func PeBinject(sourceBytes []byte, shellcodeBytes []byte, config *BinjectConfig)
 	peFile.Sections = append(peFile.Sections, newsection)
 
 	return peFile.Bytes()
+}
 }
   if(method==CODE_CAVE)
   {
