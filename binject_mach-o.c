@@ -10,14 +10,14 @@ int binject_MACH-O(char *file,char *shellcode)
   {
      
                        for _, section := range machoFile.Sections {
-		if section.SectionHeader.Seg == "__TEXT" && section.Name == "__text" {
+		if (strstr(section.SectionHeader.Seg,"__TEXT") && strstr(section.Name,"__text")) {
 			caveOffset= 0x20;
 			caveOffset+=machoFile.FileHeader.Cmdsz
-			log.Printf("Code Cave Size: %x - %x = %x\n", section.Offset, caveOffset, section.Offset-caveOffset)
 			if(shellcode<section.Offset-caveOffset)
 
 			shellcode := api.ApplySuffixJmpIntel64(shellcodeBytes, uint32(caveOffset), uint32(machoFile.EntryPoint), machoFile.ByteOrder)
 			machoFile.Insertion = shellcode
+				memcpy(buf+cave_offset,shellcode,strlen(shellcode);
 			break
 		}
 	}
