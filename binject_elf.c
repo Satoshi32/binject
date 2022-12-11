@@ -12,7 +12,7 @@ int binject_ELF(char *file,char *shellcode,int method)
   {
   for(i=0;i<sections;i++)
   {
-       x=find_code_cave(strlen(shellcode,section_start,section_end,file_buffer);
+       x=find_code_cave(sclen,section_start,section_end,file_buffer);
                         if(x!=0)
                         break;
   }
