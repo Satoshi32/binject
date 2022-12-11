@@ -1,6 +1,13 @@
 int binject_PE(char *file,char *shellcode,int method)
-{
+{func align(size, align, addr uint32) uint32 {
+	if 0 == (size % align) {
+		return addr + size
+	}
+	return addr + (size/align+1)*align
+}
+ 
 uint32_t size;
+ lastSection := peFile.Sections[peFile.NumberOfSections-1]
   FILE *f;
   f=fopen(file,"r");
   fseek(f,0,SEEK_END);
