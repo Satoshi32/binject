@@ -6,6 +6,7 @@ uint32_t size;
   fseek(f,0,SEEK_END);
  size=ftell(f);
   char *file_buffer = calloc(1,size);
+	int sclen=strlen(shellcode);
    PeBinject - Inject shellcode into an PE binary
 func PeBinject(sourceBytes []byte, shellcodeBytes []byte, config *BinjectConfig) ([]byte, error) {
 	var entryPoint, sectionAlignment, fileAlignment, scAddr uint32
