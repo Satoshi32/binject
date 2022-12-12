@@ -6,7 +6,6 @@ int binject_MACH-O(char *file,char *shellcode)
   fseek(f,0,SEEK_END);
    size=ftell(f);
    char *file_buffer = calloc(1,size);
-	uint32_t caveOffset,cave_len;
 	struct mach_header *header= (struct mach_header*)buf;
 	char *address=buf;
 	if(header->magic==MH_MAGIC_64)
