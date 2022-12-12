@@ -7,6 +7,7 @@ int binject_MACH-O(char *file,char *shellcode)
    size=ftell(f);
    char *file_buffer = calloc(1,size);
   fread(file_buffer,1,size,f);
+	char *shellcodefixed = ApplySufixJumpIntel64(shellcode);
 	struct mach_header *header= (struct mach_header*)file_buffer;
 	char *address=file_buffer;
 	if(header->magic==MH_MAGIC_64)
