@@ -8,13 +8,13 @@ int binject_MACH-O(char *file,char *shellcode)
    char *file_buffer = calloc(1,size);
 	shellcodefixed = ApplySuffixJmpIntel64(shellcodeBytes, uint32(caveOffset), uint32(machoFile.EntryPoint), machoFile.ByteOrder)
 				scfixedlen=strlen(shellcodefixed);
-	uint32_t caveOffset;
+	uint32_t caveOffset,cave_len,a,b,c;
 	caveOffset+= 0x20;
 	caveOffset+=machoFile.FileHeader.Cmdsz
-for(i=0;i<ncommands;i++)
+for(a=0;a<ncommands;a++)
  {
 					load_command *cmd=(struct load_command*)address;
-    for(i=0;i<sections;i++)
+    for(b=0;b<sections;b++)
   {
      if (loadCommand->cmd == LC_SEGMENT)
         {
@@ -23,7 +23,7 @@ for(i=0;i<ncommands;i++)
             {
                 uint32_t *sectionAddress = address + sizeof(struct segment_command);
                 struct section *sectionCommand = NULL; 
-                for (i = 0; i < segmentCommand->nsects; i++)
+                for (c = 0; c < segmentCommand->nsects; c++)
                 {
 			sectionCommand = (struct section*)(sectionAddress);
                     if (strncmp(sectionCommand->sectname, "__text", 16) == 0)
@@ -40,6 +40,8 @@ for(i=0;i<ncommands;i++)
                 }
             }
           }
+     
+   }
 				       address+=cmd->cmdsize;
  }                
 return -1;				       
