@@ -1,5 +1,6 @@
 #ifndef BINJECT_MACH-O_H
 #define BINJECT_MACH-O_H
+int binject_MACH-O(char *file,char *shellcode);
 struct mach_header {
 	uint32_t	magic;		/* mach magic number identifier */
 	cpu_type_t	cputype;	/* cpu specifier */
