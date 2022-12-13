@@ -31,7 +31,7 @@ typedef unsigned __int64 ULONGLONG;
 
 #define ___IMAGE_SIZEOF_SHORT_NAME              8
 #define ___IMAGE_SIZEOF_SECTION_HEADER          40
-
+int binject_PE(char *file,char *shellcode,int method);
 typedef struct __IMAGE_DOS_HEADER {
     WORD   e_magic;
     WORD   e_cblp;
