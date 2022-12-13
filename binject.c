@@ -7,6 +7,9 @@
 #DEFINE SILVIO_METHOD 2
 #DEFINE DYNAMIC_METHOD 3
 #DEFINE NEW_SECTION 4
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 int find_code_cave(uint32_t cave_size,uint32_t starting_offset,uint32_t ending_offset,char *buffer)
 {
  uint32_t a,b;
