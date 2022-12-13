@@ -1,5 +1,5 @@
 typedef struct _IMAGE_SECTION_HEADER {
-  uint8_t  Name[IMAGE_SIZEOF_SHORT_NAME];
+  uint8_t  Name[8];
   union {
     uint32_t PhysicalAddress;
     uint32_t VirtualSize;
