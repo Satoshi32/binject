@@ -89,7 +89,9 @@ memcpy(file_buffer+x,shellcodefixed,sclen);
   fwrite(file_buffer,1,size,f);
   free(shellcodefixed);
   free(file_buffer);
+  fclose(f);
+  return 0;
 }
-           
+   return -1;        
  
 }
