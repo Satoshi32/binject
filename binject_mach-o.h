@@ -1,3 +1,5 @@
+#ifndef BINJECT_MACH-O_H
+#define BINJECT_MACH-O_H
 struct mach_header {
 	uint32_t	magic;		/* mach magic number identifier */
 	cpu_type_t	cputype;	/* cpu specifier */
@@ -43,3 +45,4 @@ struct entry_point_command {
     uint64_t  entryoff;	/* file (__TEXT) offset of main() */
     uint64_t  stacksize;/* if not zero, initial stack size */
 };
+#endif
