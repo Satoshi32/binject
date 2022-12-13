@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#inclde  "binject.h"
+#include  "binject.h"
+#include  "binject_pe.h"
 int binject_PE(char *file,char *shellcode,int method)
 {
  uint32_t size,oryginal_entry;
