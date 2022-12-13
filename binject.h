@@ -11,7 +11,6 @@
 #define BINJECT_H
 int find_code_cave(uint32_t cave_size,uint32_t starting_offset,uint32_t ending_offset,char *buffer);
 int file_type(char* file);
-  
-  
-  
+char *ApplySuffixJmpIntel64(char *shellcode,uint32_t cave_offset,uint32_t entry_point,int byte_order);
+int binject(char *file,char *shellcode);
   #endif
