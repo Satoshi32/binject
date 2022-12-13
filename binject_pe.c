@@ -26,9 +26,11 @@ int binject_PE(char *file,char *shellcode,int method)
 					fclose(f);
 					return 0;
 				}		
-					address+=section.SizeOfRawData;	
+						
 				                                                   }
+			                                               address+=section.SizeOfRawData;
 				                                 }
+			   return -1;
    }
 			   
   if(method==NEW_SECTION)
