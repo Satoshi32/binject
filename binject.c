@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "binject_mach-o.h"
+#include "binject_pe.h"
+#include "binject_elf.h"
 int find_code_cave(uint32_t cave_size,uint32_t starting_offset,uint32_t ending_offset,char *buffer)
 {
  uint32_t a,b;
