@@ -1,6 +1,6 @@
 int binject_PE(char *file,char *shellcode,int method)
 {
- uint32_t size;
+ uint32_t size,oryginal_entry;
   int i,x;
   int sclen=strlen(shellcode);
   FILE *f;
@@ -15,6 +15,7 @@ int binject_PE(char *file,char *shellcode,int method)
 	  
 	address+=dos->e_elfanew
 	PIMAGE_NT_HEADERS nt = (struct PIMAGE_NT_HEADERS *)address;
+	oryginal_entry=nt->OptionalHeader.AddressOfEntryPoint;
 	address+= sizeof(IMAGE_NT_HEADERS);
 		for(int i=0;i<nt->FileHeader.NumberOfSections;i++) {
 			PIMAGE_SECTION_HEADER section= (struct PIMAGE_SECTION_HEADER*)address;
