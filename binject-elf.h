@@ -1,4 +1,5 @@
-
+#ifndef 
+#define BINJECT-ELF_H
 typedef struct {
         unsigned char   e_ident[16];
         uint16_t      e_type;
@@ -41,3 +42,4 @@ typedef struct
   uint32_t    sh_addralign;           /* Section alignment */
   uint32_t    sh_entsize;             /* Entry size if section holds table */
 } Elf32_Shdr;
+#endif
