@@ -1,3 +1,5 @@
+#ifndef BINJECT_PE_H
+#define BINJECT_PE_H
 typedef unsigned char BYTE;
 typedef unsigned short WORD;
 typedef unsigned long DWORD;
@@ -183,3 +185,4 @@ typedef struct __IMAGE_SECTION_HEADER {
     WORD    NumberOfLinenumbers;
     DWORD   Characteristics;
 } ___IMAGE_SECTION_HEADER, * ___PIMAGE_SECTION_HEADER;
+#endif
