@@ -1,5 +1,5 @@
-#ifndef 
-#define BINJECT-ELF_H
+#ifndef BINJECT_ELF_H
+#define BINJECT_ELF_H
 typedef struct {
         unsigned char   e_ident[16];
         uint16_t      e_type;
