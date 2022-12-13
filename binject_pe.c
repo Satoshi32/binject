@@ -44,4 +44,5 @@ int binject_PE(char *file,char *shellcode,int method)
 			   
  free(file_buffer);
  fclose(f);
+ return -1;
 }
