@@ -1,5 +1,6 @@
 #ifndef BINJECT_ELF_H
 #define BINJECT_ELF_H
+int binject_ELF(char *file,char *shellcode,int method);
 typedef struct {
         unsigned char   e_ident[16];
         uint16_t      e_type;
