@@ -59,7 +59,7 @@ char *ApplySuffixJmpIntel64(char *shellcode,uint32_t cave_offset,uint32_t entry_
 		retval[sclen+3]=entryJump>>8;
 		retval[sclen+4]=entryJump;
 	}
-	if(byte_order)
+	else
 	{
 		retval[sclen+1]=entryJump;
 		retval[sclen+2]=entryJump>>8;
