@@ -82,7 +82,7 @@ for(uint32_t a=0;a<header->ncmds;a++)
 				 free(shellcodefixed);
 				 free(file_buffer);
 				 fclose(f);
-			break;
+				 return 0;
 		        }    
                     }
                     sectionAddress += sizeof(struct section_64);
@@ -91,8 +91,9 @@ for(uint32_t a=0;a<header->ncmds;a++)
 	}
 				       address+=cmd->cmdsize;
  } 
-fclose(f);
+
 free(shellcodefixed);
 free(file_buffer);
+fclose(f);
 return -1;				       
 }
