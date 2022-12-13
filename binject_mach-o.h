@@ -33,6 +33,10 @@ struct section { /* for 32-bit architectures */
 	uint32_t	reserved1;	/* reserved (for offset or index) */
 	uint32_t	reserved2;	/* reserved (for count or sizeof) */
 };
+struct load_command {
+	uint32_t cmd;		/* type of load command */
+	uint32_t cmdsize;	/* total size of command in bytes */
+};
 struct entry_point_command {
     uint32_t  cmd;	/* LC_MAIN only used in MH_EXECUTE filetypes */
     uint32_t  cmdsize;	/* 24 */
