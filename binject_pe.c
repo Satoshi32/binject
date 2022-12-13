@@ -21,10 +21,11 @@ int binject_PE(char *file,char *shellcode,int method)
 			if(section->characteristics&pe.IMAGE_SCN_MEM_EXECUTE != 0 { 
 				uint32_t section_start=section->PointerToRawData;
 				uint32_t section_end=section_start+section->SizeOfRawData;
-			        sclen+=5;
+			        
 			        x=find_code_cave(sclen,section_start,section_end,file_buffer);
 				if(x!=0)
 				{ 
+					sclen+=5;
 					char *shellcodefixed =ApplySuffixJmpIntel64(shellcodeBytes, uint32(scAddr), uint32(entryPoint), binary.LittleEndian);
 					memcpy(file_buffer+x,shellcodefixed,sclen);
 					fwrite(file_buffer,1,size,f);
