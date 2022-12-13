@@ -93,5 +93,6 @@ int binject(char *file,char *shellcode)
                return -1;
               break;
               }
+		   return 0;
            }
            
