@@ -7,10 +7,10 @@ int binject_PE(char *file,char *shellcode,int method)
 {
  uint32_t size,oryginal_entry;
   int i,x;
-  int sclen=strlen(shellcode);
   FILE *f;
   f=fopen(file,"rw");
   fseek(f,0,SEEK_END);
+  int sclen=strlen(shellcode);
   size=ftell(f);
   char *file_buffer = calloc(1,size);
   fseek(f,0,SEEK_SET);
