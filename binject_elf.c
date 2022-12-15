@@ -7,10 +7,10 @@ int binject_ELF(char *file,char *shellcode,int method)
 {
   uint32_t size,oryginal_entry;
   int i,x;
-  int sclen=strlen(shellcode);
   FILE *f;
   f=fopen(file,"r");
   fseek(f,0,SEEK_END);
+int sclen=strlen(shellcode);
  size=ftell(f);
   fseek(f,0,SEEK_SET);
 	
