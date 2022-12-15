@@ -32,7 +32,8 @@ int binject_ELF(char *file,char *shellcode,int method)
 			{
 			sclen+=5
 		 char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,oryginal_entry,0) 
-                        memcpy(file_buffer+x,shellcodefixed,sclen)
+                        memcpy(file_buffer+x,shellcodefixed,sclen);
+			fseek(f,0,SEEK_SET);
 			fwrite(file_buffer,1,size,f);
 			free(shellcodefixed);
 			free(file_buffer);
