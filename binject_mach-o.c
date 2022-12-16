@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "binject.h"
+#include "binject-util.h"
 #include "binject_mach-o.h"
 int binject_MACH-O(char *file,char *shellcode)
 {
