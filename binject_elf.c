@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "binject.h"
+#include "binject-util.h"
 #include "binject_elf.h"
 int binject_ELF(char *file,char *shellcode,int method)
 {
