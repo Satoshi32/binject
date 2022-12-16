@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include  "binject.h"
+#include  "binject-util.h"
 #include  "binject_pe.h"
 int binject_PE(char *file,char *shellcode,int method)
 {
